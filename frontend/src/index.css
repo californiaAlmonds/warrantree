@@ -1,0 +1,559 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* EMERGENCY ICON SIZE FIX */
+svg {
+  width: 1.25rem !important;
+  height: 1.25rem !important;
+  max-width: 1.25rem !important;
+  max-height: 1.25rem !important;
+  min-width: 1.25rem !important;
+  min-height: 1.25rem !important;
+  flex-shrink: 0 !important;
+  display: inline-block !important;
+  vertical-align: middle !important;
+}
+
+/* Specific size overrides for different icon sizes */
+.h-3.w-3 svg, svg.h-3.w-3 {
+  width: 0.75rem !important;
+  height: 0.75rem !important;
+  max-width: 0.75rem !important;
+  max-height: 0.75rem !important;
+}
+
+.h-4.w-4 svg, svg.h-4.w-4 {
+  width: 1rem !important;
+  height: 1rem !important;
+  max-width: 1rem !important;
+  max-height: 1rem !important;
+}
+
+.h-5.w-5 svg, svg.h-5.w-5 {
+  width: 1.25rem !important;
+  height: 1.25rem !important;
+  max-width: 1.25rem !important;
+  max-height: 1.25rem !important;
+}
+
+.h-6.w-6 svg, svg.h-6.w-6 {
+  width: 1.5rem !important;
+  height: 1.5rem !important;
+  max-width: 1.5rem !important;
+  max-height: 1.5rem !important;
+}
+
+.h-8.w-8 svg, svg.h-8.w-8 {
+  width: 2rem !important;
+  height: 2rem !important;
+  max-width: 2rem !important;
+  max-height: 2rem !important;
+}
+
+/* CRITICAL LAYOUT FIXES */
+html, body, #root {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Force correct display properties */
+.min-h-screen {
+  min-height: 100vh !important;
+  display: block !important;
+}
+
+.fixed {
+  position: fixed !important;
+}
+
+.pl-72 {
+  padding-left: 18rem !important;
+}
+
+.w-72 {
+  width: 18rem !important;
+}
+
+.inset-y-0 {
+  top: 0 !important;
+  bottom: 0 !important;
+}
+
+.left-0 {
+  left: 0 !important;
+}
+
+.z-50 {
+  z-index: 50 !important;
+}
+
+.flex {
+  display: flex !important;
+}
+
+.flex-col {
+  flex-direction: column !important;
+}
+
+.h-full {
+  height: 100% !important;
+}
+
+.h-20 {
+  height: 5rem !important;
+}
+
+.items-center {
+  align-items: center !important;
+}
+
+.justify-center {
+  justify-content: center !important;
+}
+
+.space-x-3 > * + * {
+  margin-left: 0.75rem !important;
+}
+
+.space-y-3 > * + * {
+  margin-top: 0.75rem !important;
+}
+
+/* Material Design Base Styles */
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-gray-50 text-gray-900 min-h-screen;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  }
+
+  /* Custom scrollbar with Material Design */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-gray-100 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gray-300 rounded-full;
+    transition: background-color 0.2s ease;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-400;
+  }
+
+  /* Focus styles with Material Design ripple effect */
+  *:focus {
+    outline: none;
+  }
+
+  *:focus-visible {
+    @apply ring-2 ring-primary-500 ring-offset-2 ring-offset-white;
+    border-radius: 8px;
+  }
+
+  /* Form elements with Material Design styling */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="number"],
+  input[type="date"],
+  input[type="tel"],
+  textarea,
+  select {
+    @apply block w-full rounded-xl border-0 bg-white shadow-sm ring-1 ring-gray-200
+           focus:ring-2 focus:ring-primary-500 placeholder:text-gray-400
+           transition-all duration-200 ease-in-out;
+    padding: 12px 16px;
+    font-size: 14px;
+  }
+
+  input:hover {
+    @apply ring-gray-300;
+  }
+
+  /* Button ripple effect */
+  button {
+    @apply transition-all duration-200 ease-in-out;
+    position: relative;
+    overflow: hidden;
+  }
+
+  button:active {
+    transform: scale(0.98);
+  }
+
+  /* Prevent text selection on interactive elements */
+  button, .btn {
+    user-select: none;
+  }
+}
+
+/* Material Design Components */
+@layer components {
+  /* Material Design Elevation Shadows */
+  .elevation-0 { box-shadow: none; }
+  .elevation-1 { box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); }
+  .elevation-2 { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+  .elevation-3 { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+  .elevation-4 { box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
+  .elevation-5 { box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+
+  /* Material Design Cards */
+  .material-card {
+    @apply bg-white rounded-2xl elevation-1 transition-all duration-300 ease-in-out;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .material-card:hover {
+    @apply elevation-3;
+    transform: translateY(-2px);
+  }
+
+  .material-card-clickable {
+    @apply material-card cursor-pointer;
+  }
+
+  .material-card-clickable:hover {
+    @apply elevation-4;
+    transform: translateY(-4px);
+  }
+
+  .material-card-clickable:active {
+    transform: translateY(-1px);
+    @apply elevation-2;
+  }
+
+  /* Statistics Cards */
+  .stat-card {
+    @apply material-card p-6 relative overflow-hidden;
+    background: linear-gradient(135deg, white 0%, #f8fafc 100%);
+  }
+
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6, #06b6d4);
+  }
+
+  /* Loading spinner with Material Design */
+  .material-spinner {
+    @apply animate-spin rounded-full border-4 border-gray-200;
+    border-top-color: #3b82f6;
+    width: 40px;
+    height: 40px;
+  }
+
+  /* Badge with Material Design */
+  .material-badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold
+           transition-all duration-200 ease-in-out;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  }
+
+  .material-badge-primary {
+    @apply bg-blue-100 text-blue-800 ring-1 ring-blue-200;
+  }
+
+  .material-badge-success {
+    @apply bg-green-100 text-green-800 ring-1 ring-green-200;
+  }
+
+  .material-badge-warning {
+    @apply bg-yellow-100 text-yellow-800 ring-1 ring-yellow-200;
+  }
+
+  .material-badge-danger {
+    @apply bg-red-100 text-red-800 ring-1 ring-red-200;
+  }
+
+  .material-badge-gray {
+    @apply bg-gray-100 text-gray-800 ring-1 ring-gray-200;
+  }
+
+  /* Material Design Buttons */
+  .material-btn {
+    @apply inline-flex items-center justify-center px-6 py-3 text-sm font-semibold
+           rounded-xl transition-all duration-200 ease-in-out
+           focus:outline-none focus:ring-2 focus:ring-offset-2
+           disabled:opacity-50 disabled:cursor-not-allowed;
+    min-height: 44px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .material-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transition: width 0.6s, height 0.6s, top 0.6s, left 0.6s;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  .material-btn:active::before {
+    width: 300px;
+    height: 300px;
+  }
+
+  .material-btn-primary {
+    @apply bg-gradient-to-r from-blue-500 to-blue-600 text-white
+           hover:from-blue-600 hover:to-blue-700
+           focus:ring-blue-500 elevation-2;
+  }
+
+  .material-btn-primary:hover {
+    @apply elevation-3;
+    transform: translateY(-1px);
+  }
+
+  .material-btn-secondary {
+    @apply bg-white text-gray-700 ring-1 ring-gray-200
+           hover:bg-gray-50 hover:ring-gray-300
+           focus:ring-gray-500 elevation-1;
+  }
+
+  .material-btn-secondary:hover {
+    @apply elevation-2;
+  }
+
+  .material-btn-danger {
+    @apply bg-gradient-to-r from-red-500 to-red-600 text-white
+           hover:from-red-600 hover:to-red-700
+           focus:ring-red-500 elevation-2;
+  }
+
+  /* Material Design Form Groups */
+  .material-form-group {
+    @apply space-y-2;
+  }
+
+  .material-form-label {
+    @apply block text-sm font-semibold text-gray-700 mb-2;
+  }
+
+  .material-form-error {
+    @apply text-sm text-red-600 mt-1 flex items-center;
+  }
+
+  /* Material Design Modal */
+  .material-modal {
+    @apply fixed inset-0 z-50 flex items-center justify-center p-4;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+  }
+
+  .material-modal-content {
+    @apply bg-white rounded-3xl elevation-5 w-full max-w-md mx-auto
+           transform transition-all duration-300 ease-in-out;
+    animation: modalSlideIn 0.3s ease-out;
+  }
+
+  @keyframes modalSlideIn {
+    from {
+      opacity: 0;
+      transform: scale(0.9) translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+
+  /* Material Design Navigation */
+  .material-nav-item {
+    @apply flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium
+           transition-all duration-200 ease-in-out relative;
+  }
+
+  .material-nav-item:hover {
+    @apply bg-gray-100 transform scale-105;
+  }
+
+  .material-nav-item.active {
+    @apply bg-gradient-to-r from-blue-500 to-blue-600 text-white elevation-2;
+    transform: scale(1.02);
+  }
+
+  .material-nav-item.active::before {
+    content: '';
+    position: absolute;
+    left: -4px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 20px;
+    background: white;
+    border-radius: 2px;
+  }
+
+  /* Material Design Search Input */
+  .material-search {
+    @apply relative;
+  }
+
+  .material-search input {
+    @apply pl-12 pr-4 py-3 rounded-xl border-0 bg-white shadow-sm ring-1 ring-gray-200
+           focus:ring-2 focus:ring-blue-500 transition-all duration-200;
+  }
+
+  .material-search-icon {
+    @apply absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400;
+  }
+
+  /* Animations */
+  .fade-in-up {
+    animation: fadeInUp 0.6s ease-out;
+  }
+
+  .fade-in-down {
+    animation: fadeInDown 0.6s ease-out;
+  }
+
+  .fade-in-left {
+    animation: fadeInLeft 0.6s ease-out;
+  }
+
+  .fade-in-right {
+    animation: fadeInRight 0.6s ease-out;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes fadeInRight {
+    from {
+      opacity: 0;
+      transform: translateX(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  /* Grid Layouts */
+  .material-grid {
+    @apply grid gap-6;
+  }
+
+  .material-grid-responsive {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6;
+  }
+
+  /* Text utilities */
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+@layer utilities {
+  /* Custom utilities */
+  .text-gradient {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .bg-glass {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  /* Icon sizing utilities with flex-shrink */
+  .icon-xs {
+    @apply h-3 w-3;
+    flex-shrink: 0;
+  }
+
+  .icon-sm {
+    @apply h-4 w-4;
+    flex-shrink: 0;
+  }
+
+  .icon-md {
+    @apply h-5 w-5;
+    flex-shrink: 0;
+  }
+
+  .icon-lg {
+    @apply h-6 w-6;
+    flex-shrink: 0;
+  }
+
+  .icon-xl {
+    @apply h-8 w-8;
+    flex-shrink: 0;
+  }
+} 

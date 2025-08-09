@@ -1,0 +1,15 @@
+{
+  "java.configuration.updateBuildConfiguration": "automatic",
+  "java.compile.nullAnalysis.mode": "automatic",
+  "java.sources.organizeImports.starThreshold": 99,
+  "java.sources.organizeImports.staticStarThreshold": 99,
+  "spring-boot.ls.logfile": {
+    "on": true
+  },
+  "java.saveActions.organizeImports": true,
+  "java.format.settings.url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/eclipse-java-google-style.xml",
+  "java.annotation.processing": true,
+  "java.annotation.processing.processor.options": {
+    "lombok.addLombokGeneratedAnnotation": "true"
+  }
+} 

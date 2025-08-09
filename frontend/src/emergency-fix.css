@@ -1,0 +1,68 @@
+/* EMERGENCY ICON SIZE FIX - APPLY IMMEDIATELY */
+
+/* Force all SVG icons to reasonable size */
+svg, svg * {
+  width: 1.25rem !important;
+  height: 1.25rem !important;
+  max-width: 1.25rem !important;
+  max-height: 1.25rem !important;
+  min-width: 1.25rem !important;
+  min-height: 1.25rem !important;
+}
+
+/* Specific overrides for Heroicons */
+[data-slot="icon"] {
+  width: 1.25rem !important;
+  height: 1.25rem !important;
+}
+
+/* Container-specific overrides */
+.h-3 svg, .w-3 svg {
+  width: 0.75rem !important;
+  height: 0.75rem !important;
+}
+
+.h-4 svg, .w-4 svg {
+  width: 1rem !important;
+  height: 1rem !important;
+}
+
+.h-5 svg, .w-5 svg {
+  width: 1.25rem !important;
+  height: 1.25rem !important;
+}
+
+.h-6 svg, .w-6 svg {
+  width: 1.5rem !important;
+  height: 1.5rem !important;
+}
+
+.h-8 svg, .w-8 svg {
+  width: 2rem !important;
+  height: 2rem !important;
+}
+
+/* Logo specific override */
+.h-6.w-6 svg {
+  width: 1.5rem !important;
+  height: 1.5rem !important;
+}
+
+/* Button icon overrides */
+button svg {
+  width: 1rem !important;
+  height: 1rem !important;
+  flex-shrink: 0 !important;
+}
+
+/* Navigation icon overrides */
+nav svg {
+  width: 1.25rem !important;
+  height: 1.25rem !important;
+}
+
+/* Generic fallback */
+* svg {
+  max-width: 2rem !important;
+  max-height: 2rem !important;
+} 
