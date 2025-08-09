@@ -43,7 +43,7 @@ public class AuthService {
             User user = (User) authentication.getPrincipal();
             logger.info("Successfully authenticated user: {}", user.getEmail());
 
-            // For now, return a simple token (replace with JWT later)
+            // Generate simple token (replace with JWT later)
             String token = generateSimpleToken(user);
             
             return new AuthResponse(token, user);

@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080/api'
+const API_BASE_URL = (import.meta as any).env.VITE_API_URL || 'http://localhost:8080/api'
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
@@ -10,10 +10,32 @@ const apiClient = axios.create({
   },
 })
 
+// Request interceptor to add auth token
+apiClient.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('authToken')
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`
+    }
+    return config
+  },
+  (error) => {
+    return Promise.reject(error)
+  }
+)
+
 // Response interceptor for error handling
 apiClient.interceptors.response.use(
   (response) => response.data,
   (error) => {
+    if (error.response?.status === 401) {
+      // Don't redirect to login if we're on the test page (testing expected failures)
+      if (!window.location.pathname.includes('/test')) {
+        localStorage.removeItem('authToken')
+        localStorage.removeItem('demoSession')
+        window.location.href = '/login'
+      }
+    }
     console.error('API Error:', error)
     throw error
   }
@@ -95,8 +117,50 @@ export interface CreateItemRequest {
   notes?: string
 }
 
+// Authentication types
+export interface LoginRequest {
+  email: string
+  password: string
+}
+
+export interface RegisterRequest {
+  name: string
+  email: string
+  password: string
+}
+
+export interface AuthResponse {
+  token: string
+  type: string
+  user: {
+    id: number
+    name: string
+    email: string
+    role: string
+    emailVerified: boolean
+    createdAt: string
+  }
+}
+
 // API functions
 export const api = {
+  // Authentication
+  async login(data: LoginRequest): Promise<AuthResponse> {
+    return apiClient.post('/auth/login', data)
+  },
+
+  async register(data: RegisterRequest): Promise<AuthResponse> {
+    return apiClient.post('/auth/register', data)
+  },
+
+  async validateToken(): Promise<{ valid: boolean }> {
+    return apiClient.get('/auth/validate')
+  },
+
+  async logout(): Promise<void> {
+    return apiClient.post('/auth/logout')
+  },
+
   // Vaults
   async getVaults(): Promise<Vault[]> {
     return apiClient.get('/vaults')
@@ -118,23 +182,9 @@ export const api = {
     return apiClient.delete(`/vaults/${id}`)
   },
 
-  // Items
-  async getItems(params: {
-    vaultId: number
-    categoryId?: number
-    search?: string
-    page?: number
-    size?: number
-    sort?: string
-    direction?: string
-  }): Promise<{
-    content: Item[]
-    totalElements: number
-    totalPages: number
-    size: number
-    number: number
-  }> {
-    return apiClient.get('/items', { params })
+  // Items  
+  async getItems(vaultId: number): Promise<Item[]> {
+    return apiClient.get('/items', { params: { vaultId } })
   },
 
   async getItem(id: number): Promise<Item> {

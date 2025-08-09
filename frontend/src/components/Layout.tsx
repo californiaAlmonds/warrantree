@@ -31,6 +31,11 @@ export function Layout({ children }: LayoutProps) {
     { name: 'Categories', href: '/categories', icon: TagIcon },
   ]
 
+  // Add test page link in development
+  if ((import.meta as any).env.DEV) {
+    navigation.push({ name: 'Test Suite', href: '/test', icon: ChartBarIcon });
+  }
+
   const isActive = (href: string) => {
     return location.pathname === href || location.pathname.startsWith(href + '/')
   }
@@ -99,27 +104,72 @@ export function Layout({ children }: LayoutProps) {
             height: '5rem',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: sidebarCollapsed ? 'center' : 'center',
+            justifyContent: 'space-between',
             background: 'linear-gradient(to right, #3b82f6, #1d4ed8)',
             borderBottom: '1px solid #e5e7eb',
-            position: 'relative'
+            padding: '0 1rem'
           }}
         >
+          {/* Logo */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flex: 1 }}>
+            {!sidebarCollapsed ? (
+              <Link 
+                to="/dashboard" 
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.75rem',
+                  textDecoration: 'none',
+                  transition: 'transform 0.2s',
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+                onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+              >
+                <div 
+                  style={{
+                    padding: '0.75rem',
+                    backgroundColor: 'white',
+                    borderRadius: '1rem',
+                    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                  }}
+                >
+                  <ChartBarIcon style={{ height: '2rem', width: '2rem', color: '#3b82f6' }} />
+                </div>
+                <div>
+                  <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'white' }}>
+                    WarranTree
+                  </div>
+                  <div style={{ fontSize: '0.75rem', color: 'rgba(255, 255, 255, 0.8)' }}>
+                    Warranty Management
+                  </div>
+                </div>
+              </Link>
+            ) : (
+              <div 
+                style={{
+                  padding: '0.75rem',
+                  backgroundColor: 'white',
+                  borderRadius: '1rem',
+                  boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                }}
+              >
+                <ChartBarIcon style={{ height: '1.5rem', width: '1.5rem', color: '#3b82f6' }} />
+              </div>
+            )}
+          </div>
+
           {/* Hamburger Menu */}
           <button
             onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
             style={{
-              position: 'absolute',
-              right: '1rem',
-              top: '50%',
-              transform: 'translateY(-50%)',
               padding: '0.5rem',
               backgroundColor: 'rgba(255, 255, 255, 0.2)',
               borderRadius: '0.5rem',
               border: 'none',
               cursor: 'pointer',
               transition: 'all 0.2s',
-              color: 'white'
+              color: 'white',
+              marginLeft: '0.5rem'
             }}
             onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.3)'}
             onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.2)'}
@@ -131,61 +181,6 @@ export function Layout({ children }: LayoutProps) {
             )}
           </button>
 
-          {!sidebarCollapsed ? (
-            <Link 
-              to="/dashboard" 
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.75rem',
-                textDecoration: 'none',
-                transition: 'transform 0.2s',
-              }}
-              onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
-              onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
-            >
-              <div 
-                style={{
-                  padding: '0.75rem',
-                  backgroundColor: 'white',
-                  borderRadius: '1rem',
-                  boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
-                }}
-              >
-                <ChartBarIcon style={{ height: '2rem', width: '2rem', color: '#3b82f6' }} />
-              </div>
-              <div>
-                <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'white' }}>
-                  WarranTree
-                </span>
-                <p style={{ color: '#bfdbfe', fontSize: '0.875rem', margin: 0 }}>
-                  Warranty Manager
-                </p>
-              </div>
-            </Link>
-          ) : (
-            <Link 
-              to="/dashboard" 
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                textDecoration: 'none',
-                transition: 'transform 0.2s',
-              }}
-            >
-              <div 
-                style={{
-                  padding: '0.75rem',
-                  backgroundColor: 'white',
-                  borderRadius: '1rem',
-                  boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
-                }}
-              >
-                <ChartBarIcon style={{ height: '1.5rem', width: '1.5rem', color: '#3b82f6' }} />
-              </div>
-            </Link>
-          )}
         </div>
 
         {/* Navigation */}
@@ -494,8 +489,7 @@ export function Layout({ children }: LayoutProps) {
                         onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                         onClick={() => {
                           setUserMenuOpen(false);
-                          // TODO: Navigate to profile page
-                          toast.info('Profile page coming soon!');
+                          window.location.href = '/profile';
                         }}
                       >
                         <UserCircleIcon style={{ height: '1.25rem', width: '1.25rem', color: '#6b7280' }} />
@@ -520,8 +514,7 @@ export function Layout({ children }: LayoutProps) {
                         onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                         onClick={() => {
                           setUserMenuOpen(false);
-                          // TODO: Navigate to settings page
-                          toast.info('Settings page coming soon!');
+                          window.location.href = '/profile';
                         }}
                       >
                         <Cog6ToothIcon style={{ height: '1.25rem', width: '1.25rem', color: '#6b7280' }} />

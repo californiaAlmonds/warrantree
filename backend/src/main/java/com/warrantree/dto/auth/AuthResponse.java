@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 public class AuthResponse {
     
     private String token;
+    private String refreshToken;
     private String type = "Bearer";
     private UserInfo user;
     
@@ -14,6 +15,12 @@ public class AuthResponse {
     
     public AuthResponse(String token, User user) {
         this.token = token;
+        this.user = new UserInfo(user);
+    }
+    
+    public AuthResponse(String token, String refreshToken, User user) {
+        this.token = token;
+        this.refreshToken = refreshToken;
         this.user = new UserInfo(user);
     }
     
@@ -31,6 +38,14 @@ public class AuthResponse {
     
     public void setType(String type) {
         this.type = type;
+    }
+    
+    public String getRefreshToken() {
+        return refreshToken;
+    }
+    
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
     }
     
     public UserInfo getUser() {

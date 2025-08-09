@@ -100,7 +100,8 @@ public class ItemService {
         Vault vault = vaultRepository.findVaultAccessibleByUser(item.getVault().getId(), user)
                 .orElseThrow(() -> new RuntimeException("Access denied to item"));
 
-        boolean canEdit = vault.getMembers().stream()
+        boolean isOwner = vault.getOwner().equals(user);
+        boolean canEdit = isOwner || vault.getMembers().stream()
                 .anyMatch(member -> member.getUser().equals(user) && member.canEdit());
 
         if (!canEdit) {
@@ -139,7 +140,8 @@ public class ItemService {
         Vault vault = vaultRepository.findVaultAccessibleByUser(item.getVault().getId(), user)
                 .orElseThrow(() -> new RuntimeException("Access denied to item"));
 
-        boolean canEdit = vault.getMembers().stream()
+        boolean isOwner = vault.getOwner().equals(user);
+        boolean canEdit = isOwner || vault.getMembers().stream()
                 .anyMatch(member -> member.getUser().equals(user) && member.canEdit());
 
         if (!canEdit) {

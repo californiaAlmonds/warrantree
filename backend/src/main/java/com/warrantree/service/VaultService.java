@@ -76,8 +76,9 @@ public class VaultService {
         Vault vault = vaultRepository.findVaultAccessibleByUser(vaultId, user)
                 .orElseThrow(() -> new RuntimeException("Vault not found or access denied"));
 
-        // Check if user has permission to edit
-        boolean canEdit = vault.getMembers().stream()
+        // Check if user has permission to edit (owner or member with edit rights)
+        boolean isOwner = vault.getOwner().equals(user);
+        boolean canEdit = isOwner || vault.getMembers().stream()
                 .anyMatch(member -> member.getUser().equals(user) && member.canEdit());
 
         if (!canEdit) {

@@ -108,7 +108,7 @@ const VaultsPage: React.FC = () => {
           <div className="text-center">
             <div className="flex items-center justify-center space-x-1">
               <UsersIcon className="h-4 w-4 text-gray-400" />
-                             <span className="font-semibold text-gray-900">{vault.members?.length || 1}</span>
+                             <span className="font-semibold text-gray-900">{vault.memberCount || 1}</span>
             </div>
             <p className="text-xs text-gray-500 mt-1">Members</p>
           </div>
@@ -331,7 +331,7 @@ const VaultsPage: React.FC = () => {
         
         <button
           onClick={() => setIsCreateModalOpen(true)}
-          className="inline-flex items-center px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors"
+          className="inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors shadow-sm"
         >
           <PlusIcon className="h-5 w-5 mr-2" />
           Create Vault
@@ -354,7 +354,7 @@ const VaultsPage: React.FC = () => {
             </div>
             <div className="text-center">
                              <p className="text-2xl font-bold text-gray-900">
-                 {vaults.reduce((sum, vault) => sum + (vault.members?.length || 1), 0)}
+                 {vaults.reduce((sum, vault) => sum + (vault.memberCount || 1), 0)}
                </p>
               <p className="text-sm text-gray-500">Total Members</p>
             </div>

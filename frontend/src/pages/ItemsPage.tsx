@@ -58,10 +58,37 @@ const ItemsPage: React.FC = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['items', vaultId] });
       setIsCreateModalOpen(false);
+      setEditingItem(null);
       toast.success('Item created successfully!');
     },
-    onError: () => {
-      toast.error('Failed to create item');
+    onError: (error: any) => {
+      toast.error(error?.response?.data?.error || 'Failed to create item');
+    },
+  });
+
+  // Update item mutation
+  const updateMutation = useMutation({
+    mutationFn: ({ id, data }: { id: number; data: CreateItemRequest }) => api.updateItem(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['items', vaultId] });
+      setIsCreateModalOpen(false);
+      setEditingItem(null);
+      toast.success('Item updated successfully!');
+    },
+    onError: (error: any) => {
+      toast.error(error?.response?.data?.error || 'Failed to update item');
+    },
+  });
+
+  // Delete item mutation
+  const deleteMutation = useMutation({
+    mutationFn: api.deleteItem,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['items', vaultId] });
+      toast.success('Item deleted successfully!');
+    },
+    onError: (error: any) => {
+      toast.error(error?.response?.data?.error || 'Failed to delete item');
     },
   });
 
@@ -76,7 +103,7 @@ const ItemsPage: React.FC = () => {
         item.model?.toLowerCase().includes(searchTerm.toLowerCase());
       
       const matchesCategory = !selectedCategory || 
-        item.categoryName === selectedCategory;
+        item.category?.name === selectedCategory;
       
       return matchesSearch && matchesCategory;
     });

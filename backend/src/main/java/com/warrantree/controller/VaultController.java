@@ -5,6 +5,7 @@ import com.warrantree.dto.VaultDto;
 import com.warrantree.dto.VaultSummaryDto;
 import com.warrantree.entity.User;
 import com.warrantree.service.VaultService;
+import com.warrantree.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,6 +26,7 @@ import java.util.List;
 public class VaultController {
 
     private final VaultService vaultService;
+    private final UserService userService;
 
     @GetMapping
     @Operation(summary = "Get all vaults", description = "Retrieve all vaults accessible by the current user")
@@ -83,12 +85,8 @@ public class VaultController {
 
     // TODO: Remove this dummy user creation once authentication is implemented
     private User createDummyUser() {
-        return User.builder()
-                .id(1L)
-                .email("demo@warrantree.com")
-                .name("Demo User")
-                .emailVerified(true)
-                .role(User.Role.USER)
-                .build();
+        // For now, fetch the actual demo user from database to ensure proper entity comparison
+        return userService.findByEmail("demo@warrantree.com")
+                .orElseThrow(() -> new RuntimeException("Demo user not found"));
     }
 } 

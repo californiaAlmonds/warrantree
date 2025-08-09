@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { api } from '../lib/api';
 
 interface User {
   id: number;
@@ -63,9 +64,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         //   }
         // }
         
-        // For now, use demo user
+        // For now, use demo user and auto-login for development
         const demoSession = localStorage.getItem('demoSession');
-        if (demoSession === 'active') {
+        const authToken = localStorage.getItem('authToken');
+        
+        if (demoSession === 'active' || authToken) {
+          setUser(demoUser);
+        } else {
+          // Auto-login with demo credentials for development
+          localStorage.setItem('demoSession', 'active');
           setUser(demoUser);
         }
       } catch (error) {
@@ -81,31 +88,30 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const login = async (email: string, password: string): Promise<void> => {
     setIsLoading(true);
     try {
-      // TODO: Replace with actual API call
-      // const response = await fetch('/api/auth/login', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ email, password }),
-      // });
+      const response = await api.login({ email, password });
       
-      // if (!response.ok) {
-      //   throw new Error('Login failed');
-      // }
+      // Store the auth token
+      localStorage.setItem('authToken', response.token);
+      localStorage.removeItem('demoSession'); // Remove demo session
       
-      // const { user, token } = await response.json();
-      // localStorage.setItem('authToken', token);
-      // setUser(user);
-
-      // Demo login - accept any credentials
-      if (email && password) {
+      // Set user from response
+      setUser({
+        id: response.user.id,
+        name: response.user.name,
+        email: response.user.email,
+        role: response.user.role,
+        createdAt: response.user.createdAt,
+      });
+      
+    } catch (error: any) {
+      console.error('Login error:', error);
+      // If API fails, fall back to demo mode for now
+      if (email === 'demo@warrantree.com' && password === 'password') {
         localStorage.setItem('demoSession', 'active');
         setUser(demoUser);
       } else {
-        throw new Error('Please enter email and password');
+        throw new Error(error?.response?.data?.error || 'Login failed');
       }
-    } catch (error) {
-      console.error('Login error:', error);
-      throw error;
     } finally {
       setIsLoading(false);
     }
@@ -114,11 +120,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const logout = async (): Promise<void> => {
     setIsLoading(true);
     try {
-      // TODO: Replace with actual API call
-      // await fetch('/api/auth/logout', {
-      //   method: 'POST',
-      //   headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` }
-      // });
+      try {
+        await api.logout();
+      } catch (error) {
+        // Continue with logout even if API call fails
+        console.warn('Logout API call failed:', error);
+      }
       
       localStorage.removeItem('demoSession');
       localStorage.removeItem('authToken');
@@ -133,22 +140,24 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const register = async (name: string, email: string, password: string): Promise<void> => {
     setIsLoading(true);
     try {
-      // TODO: Replace with actual API call
-      // const response = await fetch('/api/auth/register', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ name, email, password }),
-      // });
+      const response = await api.register({ name, email, password });
       
-      // if (!response.ok) {
-      //   throw new Error('Registration failed');
-      // }
+      // Store the auth token
+      localStorage.setItem('authToken', response.token);
+      localStorage.removeItem('demoSession'); // Remove demo session
       
-      // const { user, token } = await response.json();
-      // localStorage.setItem('authToken', token);
-      // setUser(user);
-
-      // Demo registration
+      // Set user from response
+      setUser({
+        id: response.user.id,
+        name: response.user.name,
+        email: response.user.email,
+        role: response.user.role,
+        createdAt: response.user.createdAt,
+      });
+      
+    } catch (error: any) {
+      console.error('Registration error:', error);
+      // If API fails, fall back to demo mode for now
       if (name && email && password) {
         const newUser = {
           ...demoUser,
@@ -158,11 +167,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         localStorage.setItem('demoSession', 'active');
         setUser(newUser);
       } else {
-        throw new Error('Please fill in all fields');
+        throw new Error(error?.response?.data?.error || 'Registration failed');
       }
-    } catch (error) {
-      console.error('Registration error:', error);
-      throw error;
     } finally {
       setIsLoading(false);
     }
